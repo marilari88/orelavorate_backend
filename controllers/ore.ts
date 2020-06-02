@@ -43,8 +43,16 @@ export const inserisciTimbratura: HandlerFunc = async (c: Context) => {
 
 export const getTimbrature: HandlerFunc = async (c) => {
   try {
-    const elencoTimbrature:Timbratura[]= await timbratureCollection.find({});
-    return elencoTimbrature;
+    const elencoTimbrature: Timbratura[] = await timbratureCollection.find();
+    if (elencoTimbrature) {
+      const elencoTimbratureElaborate = elencoTimbrature.length
+        ? elencoTimbrature.map((timbratura) => {
+          const { _id: { $oid }, ingresso, uscita, differenza } = timbratura;
+          return { id: $oid, ingresso, uscita, differenza };
+        })
+        : [];
+      return c.json(elencoTimbratureElaborate, 200);
+    }
   } catch (error) {
     throw new ErrorHandler(error.message, error.status || 500);
   }
