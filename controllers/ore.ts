@@ -21,7 +21,6 @@ export const inserisciTimbratura: HandlerFunc = async (c: Context) => {
     if (c.request.headers.get("content-type") !== "application/json") {
       throw new ErrorHandler("Invalid body", 422);
     }
-    //console.log(`Inserimento ${Object.keys(c.request.body)}`);
     const body: Timbratura = await (c.body());
 
     if (!Object.keys(body).length) {
