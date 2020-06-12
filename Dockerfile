@@ -1,12 +1,8 @@
 FROM hayd/alpine-deno:1.0.5
-
-EXPOSE 8080
-
 WORKDIR /app
 
-USER deno
+# These steps will be re-run upon each file change in your working directory:
+COPY . ./
 
-COPY . .
-RUN deno cache --unstable server.ts
-
-CMD ["run","--allow-net","--unstable","--allow-write","--allow-read","--allow-plugin","--allow-env", "server.ts"]
+# Added to ENTRYPOINT of base image.
+CMD ["run", "--allow-env","--allow-plugin", "--allow-net","--unstable","--allow-run","--allow-read","--allow-write", "main.ts"]
