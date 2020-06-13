@@ -8,7 +8,7 @@ export const getTimbratura = async (
 ) => {
   try {
     const timbratura: Timbratura = await timbratureCollection.findOne(
-      {  _id: { $oid: params.id } },
+      { _id: { $oid: params.id } },
     );
 
     if (!timbratura) {
@@ -44,7 +44,7 @@ export const getTimbrature = async ({ response }: { response: any }) => {
   }
 };
 
-export const inserisciTimbratura = async ({
+export const createTimbratura = async ({
   request,
   response,
 }: {
@@ -80,5 +80,43 @@ export const inserisciTimbratura = async ({
     console.log(error.message);
     response.status = 400;
     response.message = error.message;
+  }
+};
+
+export const updateTimbratura = async ({
+  request,
+  params,
+  response,
+}: {
+  params: { id: string };
+  request: any;
+  response: any;
+}) => {
+  try {
+    if (request.headers.get("content-type") !== "application/json") {
+      throw new Error("Invalid body");
+    }
+
+    if (!request.hasBody) {
+      throw new Error("Attenzione nessun dato fornito");
+    }
+    const body = await request.body();
+    const { ingresso, uscita, differenza } = body.value;
+
+    const idTimbratura = params.id;
+    const { matchedCount } = await timbratureCollection.updateOne(
+      { id: { $oid: idTimbratura } },
+      { $set: { ingresso, uscita, differenza } },
+    );
+
+    if (!matchedCount) {
+      response.body = { msg: `Timbratura non trovata con id ${params.id}` };
+    }
+    response.status = 200;
+    response.body = { msg: "OK" };
+  } catch (Error) {
+    console.log(Error.message);
+    response.status = 400;
+    response.message = Error.message;
   }
 };

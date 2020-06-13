@@ -1,10 +1,7 @@
-import { Application, Router } from "./deps.ts";
-import {
-  getTimbrature,
-  inserisciTimbratura,
-  getTimbratura,
-} from "./controllers/timbraturaController.ts";
-import { oakCors } from "https://deno.land/x/cors/mod.ts";
+import { Application, oakCors } from "./deps.ts";
+
+import timbraturaRouter from "./router/timbraturaRouter.ts";
+
 const env = Deno.env.toObject();
 const PORT = env.PORT || 4000;
 const HOST = env.HOST || "0.0.0.0";
@@ -59,11 +56,6 @@ export const removeDog = ({
 	response.status = 200
 } */
 
-const router = new Router();
-router
-  .get("/timbratura", getTimbrature)
-  .post("/timbratura", inserisciTimbratura)
-  .get("/timbratura/:id", getTimbratura);
 /* 
 	.get('/dogs/:name', getDog)
 	.put('/dogs/:name', updateDog)
@@ -71,8 +63,8 @@ router
 
 const app = new Application();
 app.use(oakCors());
-app.use(router.routes());
-app.use(router.allowedMethods());
+app.use(timbraturaRouter.routes());
+app.use(timbraturaRouter.allowedMethods());
 
 console.log(`Listening on port ${PORT}...`);
 
