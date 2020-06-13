@@ -104,16 +104,46 @@ export const updateTimbratura = async ({
     const { ingresso, uscita, differenza } = body.value;
 
     const idTimbratura = params.id;
-    const { matchedCount } = await timbratureCollection.updateOne(
-      { id: { $oid: idTimbratura } },
-      { $set: { ingresso, uscita, differenza } },
-    );
+    const { matchedCount, modifiedCount } = await timbratureCollection
+      .updateOne(
+        { _id: { $oid: idTimbratura } },
+        { $set: { ingresso, uscita, differenza } },
+      );
 
     if (!matchedCount) {
-      response.body = { msg: `Timbratura non trovata con id ${params.id}` };
+      throw new Error(`Timbratura non trovata con id ${params.id}`);
+    }
+
+    response.body = { rowModified: modifiedCount };
+    response.success = true;
+    response.status = 200;
+  } catch (Error) {
+    console.log(Error.message);
+    response.status = 400;
+    response.message = Error.message;
+  }
+};
+
+export const deleteTimbratura = async (
+  { params, response }: { params: { id: string }; response: any },
+) => {
+  try {
+    const idTimbratura = params.id;
+
+    const timbraturaTrovata = await timbratureCollection.findOne(
+      { _id: { $oid: idTimbratura } },
+    );
+    if (!timbraturaTrovata) {
+      response.status = 404;
+      response.message = "Timbratura Non trovata";
+    } else {
+      const result = await timbratureCollection.deleteOne(
+        { _id: { $oid: idTimbratura } },
+      );
     }
     response.status = 200;
-    response.body = { msg: "OK" };
+    response.message = "Timbratura Cancellata";
+    response.success = true;
   } catch (Error) {
     console.log(Error.message);
     response.status = 400;
