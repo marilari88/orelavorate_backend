@@ -18,5 +18,5 @@ steps:
       - "europe-west1"
       - "--platform"
       - "managed"
-    images:
-      - gcr.io/ore-lavorative-279821/denoapi
+images:
+- gcr.io/ore-lavorative-279821/denoapi
