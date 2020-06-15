@@ -1,21 +1,22 @@
 steps:
-    # Build the container image
-    - name: 'gcr.io/cloud-builders/docker'
-      args: ['build', '-t', 'gcr.io/ore-lavorative-279821/denoapi:$COMMIT_SHA', '.']
-    # Push the image to Container Registry
-    - name: 'gcr.io/cloud-builders/docker'
-      args: ['push', 'gcr.io/ore-lavorative-279821/denoapi:$COMMIT_SHA']
-    # Deploy image to Cloud Run
-    - name: 'gcr.io/cloud-builders/gcloud'
-      args:
-      - 'run'
-      - 'deploy'
-      - 'orelavorate'
-      - '--image'
-      - 'gcr.io/ore-lavorative-279821/denoapi:$COMMIT_SHA'
-      - '--region'
-      - 'europe-west1'
-      - '--platform'
-      - 'managed'
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      ["build", "-t", "gcr.io/ore-lavorative-279821/denoapi:$COMMIT_SHA", "."]
+  # Push the image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/ore-lavorative-279821/denoapi:$COMMIT_SHA"]
+  # Deploy image to Cloud Run
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "orelavorate"
+      - "--image"
+      - "gcr.io/ore-lavorative-279821/denoapi:$COMMIT_SHA"
+      - "--region"
+      - "europe-west1"
+      - "--platform"
+      - "managed"
     images:
-    - gcr.io/ore-lavorative-279821/denoapi]
+      - gcr.io/ore-lavorative-279821/denoapi

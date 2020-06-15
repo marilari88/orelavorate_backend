@@ -3,10 +3,8 @@ import { Application, oakCors } from "./deps.ts";
 import timbraturaRouter from "./router/timbraturaRouter.ts";
 
 const env = Deno.env.toObject();
-const PORT = env.PORT || 4000;
+const PORT = env.PORT || 8080;
 const HOST = env.HOST || "0.0.0.0";
-
-
 
 const app = new Application();
 app.use(oakCors());
