@@ -1,4 +1,4 @@
-FROM hayd/alpine-deno:1.2.3
+FROM hayd/alpine-deno:1.2.2
 WORKDIR /app
 
 # These steps will be re-run upon each file change in your working directory:
