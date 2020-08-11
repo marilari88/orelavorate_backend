@@ -1,15 +1,16 @@
 import db from "../config/db.ts";
 import { Timbratura } from "../interfaces/timbratura.ts";
 const database = db.getDatabase;
-const timbratureCollection = database.collection("timbrature");
+const timbratureCollection = database.collection<Timbratura>("timbrature");
 
 export const getTimbratura = async (
   { params, response }: { params: { id: string }; response: any },
 ) => {
   try {
-    const timbratura: Timbratura = await timbratureCollection.findOne(
-      { _id: { $oid: params.id } },
-    );
+    const timbratura: Timbratura|null = await timbratureCollection
+      .findOne(
+        { _id: { $oid: params.id } },
+      );
 
     if (!timbratura) {
       throw new Error("Timbratura non trovata");
@@ -27,7 +28,8 @@ export const getTimbratura = async (
 
 export const getTimbrature = async ({ response }: { response: any }) => {
   try {
-    const elencoTimbrature: Timbratura[] = await timbratureCollection.find();
+    const elencoTimbrature: Array<Timbratura> = await timbratureCollection
+      .find();
     if (elencoTimbrature) {
       const elencoTimbratureElaborate = elencoTimbrature.length
         ? elencoTimbrature.map((timbratura) => {
