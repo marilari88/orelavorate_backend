@@ -7,7 +7,7 @@ export const getTimbratura = async (
   { params, response }: { params: { id: string }; response: any },
 ) => {
   try {
-    const timbratura: Timbratura|null = await timbratureCollection
+    const timbratura: Timbratura | null = await timbratureCollection
       .findOne(
         { _id: { $oid: params.id } },
       );
@@ -66,9 +66,9 @@ export const createTimbratura = async ({
       };
       throw new Error("Attenzione nessun dato fornito");
     }
-    const body: any = await request.body();
+    const body = request.body();
 
-    const { ingresso, uscita, differenza } = body.value;
+    const { ingresso, uscita, differenza } = await body.value;
 
     const timbraturaInserita = await timbratureCollection.insertOne({
       ingresso,
@@ -103,6 +103,7 @@ export const updateTimbratura = async ({
       throw new Error("Attenzione nessun dato fornito");
     }
     const body = await request.body();
+    console.log(body);
     const { ingresso, uscita, differenza } = body.value;
 
     const idTimbratura = params.id;
@@ -129,6 +130,7 @@ export const updateTimbratura = async ({
 export const deleteTimbratura = async (
   { params, response }: { params: { id: string }; response: any },
 ) => {
+  console.log("Cancellazione timbratura in corso");
   try {
     const idTimbratura = params.id;
 
