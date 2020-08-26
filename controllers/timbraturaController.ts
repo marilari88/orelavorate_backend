@@ -102,9 +102,8 @@ export const updateTimbratura = async ({
     if (!request.hasBody) {
       throw new Error("Attenzione nessun dato fornito");
     }
-    const body = await request.body();
-    console.log(body);
-    const { ingresso, uscita, differenza } = body.value;
+    const body =  request.body();
+    const { ingresso, uscita, differenza } = await body.value;
 
     const idTimbratura = params.id;
     const { matchedCount, modifiedCount } = await timbratureCollection
