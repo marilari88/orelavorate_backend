@@ -40,8 +40,8 @@ export const getTimbrature = async (
         .find();
     } else {
       elencoTimbrature = await timbratureCollection.find().limit(
-        queryParameters.limit,
-      ).sort({ $natural: -1 });
+        parseInt(queryParameters.limit),
+      );
     }
 
     if (elencoTimbrature) {
