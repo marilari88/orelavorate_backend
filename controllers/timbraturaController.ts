@@ -1,5 +1,7 @@
 import db from "../config/db.ts";
 import { Timbratura } from "../interfaces/timbratura.ts";
+import { helpers } from "../deps.ts";
+
 const database = db.getDatabase;
 const timbratureCollection = database.collection<Timbratura>("timbrature");
 
@@ -26,10 +28,22 @@ export const getTimbratura = async (
   }
 };
 
-export const getTimbrature = async ({ response }: { response: any }) => {
+export const getTimbrature = async (
+  ctx: any,
+) => {
+  const { response } = ctx;
   try {
-    const elencoTimbrature: Array<Timbratura> = await timbratureCollection
-      .find();
+    const queryParameters = helpers.getQuery(ctx, { mergeParams: true });
+    let elencoTimbrature: Array<Timbratura>;
+    if (!queryParameters) {
+      elencoTimbrature = await timbratureCollection
+        .find();
+    } else {
+      elencoTimbrature = await timbratureCollection.find().limit(
+        queryParameters.limit,
+      ).sort({ $natural: -1 });
+    }
+
     if (elencoTimbrature) {
       const elencoTimbratureElaborate = elencoTimbrature.length
         ? elencoTimbrature.map((timbratura) => {
@@ -102,7 +116,7 @@ export const updateTimbratura = async ({
     if (!request.hasBody) {
       throw new Error("Attenzione nessun dato fornito");
     }
-    const body =  request.body();
+    const body = request.body();
     const { ingresso, uscita, differenza } = await body.value;
 
     const idTimbratura = params.id;

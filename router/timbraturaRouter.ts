@@ -10,10 +10,11 @@ import {
 
 const router = new Router();
 router
-  .get("/timbratura", getTimbrature)
-  .get("/timbratura/:id", getTimbratura)
-  .post("/timbratura", createTimbratura)
-  .put("/timbratura/:id", updateTimbratura)
-  .delete("/timbratura/:id", deleteTimbratura);
+  .get("/timbrature", getTimbrature)
+  .get("/timbrature/:id", getTimbratura)
+  .get("/timbrature/:last", getTimbratura)
+  .post("/timbrature", createTimbratura)
+  .put("/timbrature/:id", updateTimbratura)
+  .delete("/timbrature/:id", deleteTimbratura);
 
 export default router;
